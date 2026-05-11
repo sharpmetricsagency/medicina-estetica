@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Posizionamento Digitale per la Medicina Estetica — Sharp Metrics</title>
+<!-- === FONTS: Sharp Metrics official stack === -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@1&family=Fira+Code:wght@400;500&display=swap');
+
+/* ===========================================
+   VIEWPORT FITTING — base mandatory
+   =========================================== */
+html, body { height: 100%; overflow-x: hidden; }
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+
+.slide {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.slide-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-height: 100%;
+  overflow: hidden;
+  padding: var(--slide-padding);
+}
+
+:root {
+  --title-size: clamp(1.5rem, 5vw, 4rem);
+  --h2-size: clamp(1.25rem, 3.5vw, 2.5rem);
+  --h3-size: clamp(1rem, 2.5vw, 1.75rem);
+  --body-size: clamp(0.75rem, 1.3vw, 1.05rem);
+  --small-size: clamp(0.65rem, 1vw, 0.85rem);
+  --slide-padding: clamp(1rem, 4vw, 4rem);
+  --content-gap: clamp(0.5rem, 2vw, 2rem);
+  --element-gap: clamp(0.25rem, 1vw, 1rem);
+
+  /* === Sharp Metrics brand tokens === */
+  --bg: #000000;
+  --surface: #050505;
+  --foreground: #F0EFF4;
+  --accent: #FF7033;
+  --accent-soft: rgba(255,112,51,0.1);
+  --accent-glow: rgba(255,112,51,0.3);
+  --border: rgba(255,255,255,0.1);
+  --border-strong: rgba(255,255,255,0.15);
+  --txt-70: rgba(255,255,255,0.7);
+  --txt-80: rgba(255,255,255,0.8);
+  --txt-40: rgba(255,255,255,0.4);
+  --txt-05: rgba(255,255,255,0.05);
+}
+
+img, .image-container { max-width: 100%; max-height: min(50vh, 400px); object-fit: contain; }
+
+@media (max-height: 700px) {
+  :root { --slide-padding: clamp(0.75rem, 3vw, 2rem); --content-gap: clamp(0.4rem, 1.5vw, 1rem); --title-size: clamp(1.25rem, 4.5vw, 2.5rem); --h2-size: clamp(1rem, 3vw, 1.75rem); }
+}
+@media (max-height: 600px) {
+  :root { --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem); --content-gap: clamp(0.3rem, 1vw, 0.75rem); --title-size: clamp(1.1rem, 4vw, 2rem); --body-size: clamp(0.7rem, 1.2vw, 0.9rem); }
+  .nav-dots, .keyboard-hint, .decorative { display: none; }
+}
+@media (max-height: 500px) {
+  :root { --slide-padding: clamp(0.4rem, 2vw, 1rem); --title-size: clamp(1rem, 3.5vw, 1.5rem); --body-size: clamp(0.65rem, 1vw, 0.8rem); }
+}
+@media (max-width: 600px) {
+  :root { --title-size: clamp(1.25rem, 7vw, 2.5rem); }
+  .grid-2, .grid-3 { grid-template-columns: 1fr !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* ===========================================
+   GLOBAL
+   =========================================== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--foreground);
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* === NOISE OVERLAY (Sharp Metrics official) === */
+.noise {
+  position: fixed; inset: 0; z-index: 50; pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='1'/></svg>");
+}
+
+/* === SHARED TYPO === */
+.kicker {
+  font-family: 'Fira Code', monospace;
+  font-size: clamp(0.62rem, 0.9vw, 0.78rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.kicker::before {
+  content: "";
+  display: inline-block;
+  width: clamp(1.2rem, 3vw, 2.2rem);
+  height: 1px;
+  background: var(--accent);
+}
+.h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  font-size: clamp(2rem, 5.4vw, 4.6rem);
+  color: var(--foreground);
+}
+.h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  font-size: clamp(1.5rem, 3.6vw, 2.9rem);
+  color: var(--foreground);
+}
+.accent { color: var(--accent); }
+.drama {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.lead {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.92rem, 1.35vw, 1.15rem);
+  line-height: 1.55;
+  color: var(--txt-70);
+  max-width: 65ch;
+}
+.body-txt {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--body-size);
+  line-height: 1.5;
+  color: var(--txt-80);
+}
+
+/* === ACCENT LINE TOP === */
+.accent-line {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+  opacity: 0.6;
+}
+
+/* === GLASS PANEL === */
+.glass {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid var(--border-strong);
+  border-radius: 2rem;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,0.08),
+    0 20px 40px -15px rgba(0,0,0,0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+/* === RADIAL ATMOSPHERIC BG === */
+.atmo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 80% 10%, rgba(255,112,51,0.10), transparent 50%),
+    radial-gradient(ellipse at 10% 90%, rgba(255,112,51,0.06), transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+.atmo > * { position: relative; z-index: 1; }
+
+/* === GRID DOTS BACKGROUND === */
+.dots-bg {
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+
+/* ===========================================
+   SLIDE 1 — COVER
+   =========================================== */
+#s1 { background: var(--bg); }
+#s1 .cover-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+  height: 100%;
+  padding: var(--slide-padding);
+}
+#s1 .cover-visual {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(0.8rem, 1.8vw, 1.4rem);
+}
+
+/* SETTORI — service stack card */
+#s1 .sectors-card {
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(255,112,51,0.12), transparent 55%),
+    var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 1.6rem;
+  padding: clamp(1rem, 2vw, 1.6rem);
+  position: relative;
+  overflow: hidden;
+}
+#s1 .sectors-card .accent-line { opacity: 0.6; }
+#s1 .sectors-label {
+  font-family: 'Fira Code', monospace;
+  font-size: clamp(0.62rem, 0.85vw, 0.74rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: flex; align-items: center; gap: 0.5rem;
+  margin-bottom: clamp(0.6rem, 1.2vw, 1rem);
+}
+#s1 .sectors-label::after {
+  content: ""; flex: 1; height: 1px; background: linear-gradient(to right, rgba(255,112,51,0.4), transparent);
+}
+#s1 .sectors-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.45rem, 0.9vw, 0.7rem);
+}
+#s1 .sector-chip {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1vw, 0.75rem);
+  padding: clamp(0.55rem, 1.1vw, 0.85rem) clamp(0.7rem, 1.3vw, 1rem);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  border-radius: 0.6rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: clamp(0.7rem, 1vw, 0.85rem);
+  color: var(--foreground);
+  line-height: 1.25;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+#s1 .sector-chip:hover {
+  background: rgba(255,112,51,0.08);
+  transform: translateX(4px);
+}
+#s1 .sector-icon {
+  width: clamp(1.4rem, 2.2vw, 1.9rem);
+  height: clamp(1.4rem, 2.2vw, 1.9rem);
+  border-radius: 6px;
+  background: rgba(255,112,51,0.12);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+#s1 .sector-icon svg { width: 60%; height: 60%; }
+
+/* PATIENT JOURNEY — flow */
+#s1 .journey-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 1.2rem;
+  padding: clamp(0.9rem, 1.7vw, 1.2rem) clamp(1rem, 1.9vw, 1.4rem);
+  position: relative;
+}
+#s1 .journey-label {
+  font-family: 'Fira Code', monospace;
+  font-size: clamp(0.62rem, 0.85vw, 0.74rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--txt-70);
+  margin-bottom: clamp(0.5rem, 1vw, 0.8rem);
+}
+#s1 .journey-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: clamp(0.3rem, 0.8vw, 0.6rem);
+}
+#s1 .journey-step {
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  gap: 0.25rem;
+}
+#s1 .journey-step-num {
+  font-family: 'Fira Code', monospace;
+  font-size: clamp(0.6rem, 0.85vw, 0.75rem);
+  color: var(--accent);
+}
+#s1 .journey-step-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: clamp(0.72rem, 1.05vw, 0.92rem);
+  color: var(--foreground);
+}
+#s1 .journey-arrow {
+  color: var(--accent);
+  font-size: clamp(1rem, 1.6vw, 1.4rem);
+  font-weight: 300;
+  opacity: 0.7;
+}
+
+#s1 .cover-copy { display: flex; flex-direction: column; gap: clamp(0.8rem, 1.6vw, 1.4rem); }
+#s1 .badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(255,112,51,0.3);
+  background: var(--accent-soft);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  width: fit-content;
+}
+#s1 .badge::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+#s1 h1 { font-size: clamp(1.8rem, 4.6vw, 3.8rem); }
+#s1 .sub { font-size: clamp(0.85rem, 1.25vw, 1.1rem); color: var(--txt-70); line-height: 1.55; font-weight: 300; max-width: 56ch; }
+#s1 .sub strong { color: var(--foreground); font-weight: 600; }
+#s1 .sm-tag {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: clamp(0.72rem, 1vw, 0.85rem);
+  letter-spacing: 0.05em;
+  color: var(--foreground);
+  background: rgba(255,112,51,0.18);
+  border: 1px solid rgba(255,112,51,0.4);
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
+  width: fit-content;
+  text-transform: uppercase;
+}
+#s1 .sm-tag span { color: var(--accent); }
+
+/* ===========================================
+   SLIDE 2 — Paziente decide online
+   =========================================== */
+#s2 .grid-2 {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: center;
+  height: 100%;
+}
+#s2 .stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.8rem, 2vw, 1.6rem);
+}
+#s2 .stat {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1.2rem;
+  padding: clamp(1rem, 2vw, 1.6rem);
+  overflow: hidden;
+}
+#s2 .stat:nth-child(3) { grid-column: 1 / -1; }
+#s2 .stat-num {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  color: var(--foreground);
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+#s2 .stat-num .accent { color: var(--accent); }
+#s2 .stat-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(0.78rem, 1.1vw, 0.95rem);
+  font-weight: 600;
+  color: var(--foreground);
+  margin-top: 0.5rem;
+}
+#s2 .stat-desc {
+  font-size: clamp(0.7rem, 1vw, 0.85rem);
+  color: var(--txt-70);
+  margin-top: 0.3rem;
+  line-height: 1.4;
+}
+#s2 .source {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.7rem;
+  color: var(--txt-40);
+  margin-top: clamp(0.6rem, 1.5vw, 1rem);
+}
+
+/* ===========================================
+   SLIDE 3 — CRITICITÀ
+   =========================================== */
+#s3 .grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 1fr;
+  gap: clamp(0.7rem, 1.4vw, 1.1rem);
+  margin-top: clamp(0.8rem, 2vw, 1.6rem);
+}
+#s3 .crit {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0.8rem;
+  padding: clamp(0.8rem, 1.6vw, 1.2rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  position: relative;
+  overflow: hidden;
+}
+#s3 .crit-num {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+#s3 .crit-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 1.25vw, 1.05rem);
+  color: var(--foreground);
+}
+#s3 .crit-desc {
+  font-size: clamp(0.7rem, 1vw, 0.82rem);
+  color: var(--txt-70);
+  line-height: 1.4;
+}
+
+/* ===========================================
+   SLIDE 4 — Sito Web & UX
+   =========================================== */
+#s4 .grid-split {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: center;
+  height: 100%;
+}
+/* ===== SITE MOCKUP — large, readable, recognizable ===== */
+#s4 .mock {
+  position: relative;
+  width: 100%;
+  max-width: min(38vw, 480px);
+  margin: 0 auto;
+  border-radius: 1.4rem;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,0.06),
+    0 30px 60px -20px rgba(0,0,0,0.7),
+    0 0 0 1px rgba(255,112,51,0.06);
+  font-family: 'Inter', sans-serif;
+}
+#s4 .mock-chrome {
+  display: flex; align-items: center; gap: 0.4rem;
+  padding: clamp(0.5rem, 1vw, 0.7rem) clamp(0.7rem, 1.2vw, 1rem);
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+#s4 .mock-chrome .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+#s4 .mock-chrome .url {
+  flex: 1;
+  font-family: 'Fira Code', monospace;
+  font-size: clamp(0.55rem, 0.8vw, 0.7rem);
+  color: var(--txt-70);
+  background: rgba(255,255,255,0.04);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  margin-left: 0.4rem;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+#s4 .mock-body {
+  padding: clamp(0.7rem, 1.4vw, 1.1rem);
+  display: flex; flex-direction: column;
+  gap: clamp(0.5rem, 1vw, 0.8rem);
+}
+#s4 .mock-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.62rem, 0.85vw, 0.75rem);
+  color: var(--foreground);
+}
+#s4 .mock-nav .menu { display: flex; gap: 0.6rem; color: var(--txt-70); font-weight: 500; }
+#s4 .mock-nav .accent { color: var(--accent); }
+#s4 .mock-hero {
+  background: linear-gradient(135deg, rgba(255,112,51,0.18), rgba(255,112,51,0.04));
+  border: 1px solid rgba(255,112,51,0.25);
+  border-radius: 0.7rem;
+  padding: clamp(0.7rem, 1.3vw, 1rem);
+  display: flex; flex-direction: column;
+  gap: 0.4rem;
+}
+#s4 .mock-hero .h {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: clamp(0.78rem, 1.2vw, 1rem);
+  color: var(--foreground);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+#s4 .mock-hero .p {
+  font-size: clamp(0.6rem, 0.85vw, 0.74rem);
+  color: var(--txt-70);
+  line-height: 1.4;
+}
+#s4 .mock-hero .cta {
+  align-self: flex-start;
+  background: var(--accent);
+  color: #000;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.58rem, 0.8vw, 0.7rem);
+  padding: 0.35rem 0.7rem;
+  border-radius: 5px;
+  margin-top: 0.2rem;
+}
+#s4 .mock-section-label {
+  font-family: 'Fira Code', monospace;
+  font-size: clamp(0.55rem, 0.78vw, 0.66rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+#s4 .mock-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: clamp(0.3rem, 0.7vw, 0.5rem);
+}
+#s4 .mock-tile {
+  aspect-ratio: 1;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  display: flex; align-items: flex-end;
+  padding: 0.35rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: clamp(0.5rem, 0.7vw, 0.62rem);
+  color: var(--foreground);
+  line-height: 1.1;
+}
+#s4 .mock-tile.t1 { background: linear-gradient(135deg, rgba(255,112,51,0.18), rgba(255,255,255,0.03)); }
+#s4 .mock-tile.t2 { background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,112,51,0.10)); }
+#s4 .mock-tile.t3 { background: linear-gradient(135deg, rgba(255,112,51,0.10), rgba(255,255,255,0.04)); }
+#s4 .mock-booking {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  border-radius: 0.5rem;
+  padding: clamp(0.45rem, 0.9vw, 0.6rem) clamp(0.6rem, 1vw, 0.8rem);
+}
+#s4 .mock-booking .lbl {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: clamp(0.58rem, 0.8vw, 0.7rem);
+  color: var(--foreground);
+}
+#s4 .mock-booking .lbl span {
+  display: block;
+  font-weight: 400;
+  font-size: clamp(0.52rem, 0.7vw, 0.6rem);
+  color: var(--txt-70);
+  margin-top: 0.1rem;
+}
+#s4 .mock-booking .btn-mini {
+  background: var(--accent);
+  color: #000;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.55rem, 0.75vw, 0.65rem);
+  padding: 0.3rem 0.55rem;
+  border-radius: 4px;
+}
+#s4 .features { display: flex; flex-direction: column; gap: clamp(0.4rem, 1vw, 0.7rem); }
+#s4 .feat {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.6rem, 1.2vw, 1rem);
+  padding: clamp(0.5rem, 1.1vw, 0.85rem) 0;
+  border-bottom: 1px solid var(--border);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: clamp(0.78rem, 1.15vw, 1rem);
+  color: var(--foreground);
+}
+#s4 .feat-arrow {
+  width: clamp(1.6rem, 3vw, 2.2rem);
+  height: clamp(1.6rem, 3vw, 2.2rem);
+  border-radius: 50%;
+  background: rgba(255,112,51,0.12);
+  border: 1px solid rgba(255,112,51,0.3);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+#s4 .callout {
+  background: rgba(255,112,51,0.12);
+  border: 1px solid rgba(255,112,51,0.35);
+  border-radius: 0.8rem;
+  padding: clamp(0.7rem, 1.4vw, 1rem) clamp(0.9rem, 1.6vw, 1.2rem);
+  margin-top: clamp(0.6rem, 1.4vw, 1rem);
+  font-size: clamp(0.72rem, 1.05vw, 0.9rem);
+  color: var(--txt-80);
+  line-height: 1.5;
+  display: flex;
+  gap: 0.7rem;
+}
+#s4 .callout::before {
+  content: "▸";
+  color: var(--accent);
+  font-size: 1.1em;
+  flex-shrink: 0;
+}
+
+/* ===========================================
+   SLIDE 5 — SEO
+   =========================================== */
+#s5 .grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: center;
+}
+#s5 .slide-content { gap: clamp(0.8rem, 1.6vw, 1.4rem); }
+#s5 .head-block {
+  display: flex; flex-direction: column;
+  gap: clamp(0.5rem, 1.2vw, 0.9rem);
+}
+#s5 .why {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.7rem, 1.5vw, 1.2rem);
+}
+#s5 .why-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  color: var(--accent);
+  font-size: clamp(0.95rem, 1.4vw, 1.2rem);
+}
+#s5 .funnel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+#s5 .funnel-stage {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0.8rem;
+  padding: clamp(0.7rem, 1.4vw, 1rem) clamp(1rem, 2vw, 1.4rem);
+  text-align: left;
+  position: relative;
+}
+#s5 .funnel-stage:nth-child(1) { width: 100%; }
+#s5 .funnel-stage:nth-child(2) { width: 82%; margin-top: 0.6rem; }
+#s5 .funnel-stage:nth-child(3) { width: 64%; margin-top: 0.6rem; }
+#s5 .funnel-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.82rem, 1.15vw, 1rem);
+  color: var(--foreground);
+}
+#s5 .funnel-stage:nth-child(1) .funnel-label { color: var(--accent); }
+#s5 .funnel-stage:nth-child(2) .funnel-label { color: var(--accent); }
+#s5 .funnel-stage:nth-child(3) .funnel-label { color: var(--accent); }
+#s5 .funnel-desc {
+  font-size: clamp(0.7rem, 1vw, 0.82rem);
+  color: var(--txt-70);
+  margin-top: 0.2rem;
+  line-height: 1.4;
+}
+#s5 .chips {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.5rem, 1.2vw, 0.8rem);
+  margin-top: clamp(0.8rem, 2vw, 1.4rem);
+}
+#s5 .chip {
+  background: rgba(255,112,51,0.10);
+  border: 1px solid rgba(255,112,51,0.3);
+  border-radius: 0.6rem;
+  padding: clamp(0.6rem, 1.2vw, 0.85rem);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: clamp(0.72rem, 1vw, 0.85rem);
+  color: var(--foreground);
+  line-height: 1.3;
+}
+#s5 .chip.wide { grid-column: span 3; }
+
+/* ===========================================
+   SLIDE 6 — Google Ads
+   =========================================== */
+#s6 .grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: center;
+  height: 100%;
+}
+#s6 .cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.7rem, 1.4vw, 1rem);
+}
+#s6 .card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: clamp(0.9rem, 1.6vw, 1.2rem);
+  position: relative;
+  overflow: hidden;
+}
+#s6 .card-icon {
+  width: clamp(2rem, 3.2vw, 2.6rem);
+  height: clamp(2rem, 3.2vw, 2.6rem);
+  border-radius: 0.6rem;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  margin-bottom: clamp(0.4rem, 1vw, 0.6rem);
+}
+#s6 .card-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+  color: var(--foreground);
+  margin-bottom: 0.3rem;
+}
+#s6 .card-desc {
+  font-size: clamp(0.7rem, 0.98vw, 0.85rem);
+  color: var(--txt-70);
+  line-height: 1.45;
+}
+
+/* ===========================================
+   SLIDE 7 — Meta Ads funnel
+   =========================================== */
+#s7 .steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1rem, 2.5vw, 2rem);
+  margin-top: clamp(1rem, 2.5vw, 2rem);
+}
+#s7 .step { position: relative; padding-top: clamp(0.8rem, 1.6vw, 1.2rem); border-top: 1px solid var(--accent); }
+#s7 .step::before {
+  content: "";
+  position: absolute;
+  top: -1px; left: 0;
+  width: 30%;
+  height: 3px;
+  background: var(--accent);
+}
+#s7 .step-num {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: var(--txt-40);
+  margin-bottom: 0.5rem;
+}
+#s7 .step-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.2rem, 2.3vw, 1.8rem);
+  color: var(--foreground);
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5rem;
+}
+#s7 .step-desc {
+  font-size: clamp(0.78rem, 1.1vw, 0.95rem);
+  color: var(--txt-70);
+  line-height: 1.5;
+}
+
+/* ===========================================
+   SLIDE 8 — Tracciamenti
+   =========================================== */
+#s8 .grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 1fr;
+  gap: clamp(0.7rem, 1.4vw, 1.1rem);
+  margin-top: clamp(0.7rem, 1.6vw, 1.2rem);
+}
+#s8 .track {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  padding: clamp(0.8rem, 1.4vw, 1.1rem);
+  position: relative;
+}
+#s8 .track .accent-line { opacity: 0.4; }
+#s8 .track-icon {
+  width: clamp(1.8rem, 2.8vw, 2.4rem);
+  height: clamp(1.8rem, 2.8vw, 2.4rem);
+  border-radius: 0.5rem;
+  background: rgba(255,112,51,0.12);
+  border: 1px solid rgba(255,112,51,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  margin-bottom: clamp(0.4rem, 0.8vw, 0.6rem);
+}
+#s8 .track-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.8rem, 1.15vw, 1rem);
+  color: var(--foreground);
+  margin-bottom: 0.25rem;
+}
+#s8 .track-desc {
+  font-size: clamp(0.7rem, 0.95vw, 0.82rem);
+  color: var(--txt-70);
+  line-height: 1.4;
+}
+#s8 .ctx-note {
+  background: rgba(255,112,51,0.10);
+  border: 1px solid rgba(255,112,51,0.3);
+  border-radius: 0.8rem;
+  padding: clamp(0.7rem, 1.3vw, 1rem) clamp(0.9rem, 1.6vw, 1.2rem);
+  margin-top: clamp(0.6rem, 1.4vw, 1rem);
+  font-size: clamp(0.74rem, 1.05vw, 0.92rem);
+  color: var(--txt-80);
+  line-height: 1.5;
+  display: flex;
+  gap: 0.7rem;
+}
+#s8 .ctx-note strong { color: var(--accent); font-weight: 700; }
+#s8 .ctx-note::before { content: "ⓘ"; color: var(--accent); font-size: 1.2em; flex-shrink: 0; }
+
+/* ===========================================
+   SLIDE 9 — Tabella comparativa
+   =========================================== */
+#s9 .table-wrap {
+  margin-top: clamp(0.8rem, 1.8vw, 1.4rem);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  overflow: hidden;
+  background: var(--surface);
+}
+#s9 table { width: 100%; border-collapse: collapse; }
+#s9 th, #s9 td {
+  padding: clamp(0.5rem, 1.1vw, 0.85rem) clamp(0.8rem, 1.6vw, 1.2rem);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  font-size: clamp(0.72rem, 1vw, 0.88rem);
+  vertical-align: middle;
+}
+#s9 tr:last-child td { border-bottom: none; }
+#s9 th {
+  font-family: 'Fira Code', monospace;
+  font-weight: 500;
+  font-size: clamp(0.65rem, 0.85vw, 0.74rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--txt-70);
+  background: rgba(255,255,255,0.02);
+}
+#s9 td.label { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; color: var(--foreground); }
+#s9 td.generalist { color: var(--txt-70); }
+#s9 td.generalist::before { content: "✗ "; color: #ff5252; font-weight: 700; margin-right: 0.2rem; }
+#s9 td.sharp { color: var(--foreground); }
+#s9 td.sharp::before { content: "✓ "; color: var(--accent); font-weight: 700; margin-right: 0.2rem; }
+#s9 .sharp-col { background: rgba(255,112,51,0.04); }
+
+/* ===========================================
+   SLIDE 10 — CTA Final
+   =========================================== */
+#s10 .cta-wrap {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: center;
+  height: 100%;
+}
+#s10 .cta-info {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.8rem, 1.6vw, 1.4rem);
+}
+#s10 .contact-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0.8rem;
+  padding: clamp(0.9rem, 1.6vw, 1.2rem) clamp(1.1rem, 2vw, 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+#s10 .contact-label {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+#s10 .contact-row {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(0.82rem, 1.2vw, 1rem);
+  color: var(--foreground);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+#s10 .contact-row .sym {
+  color: var(--accent);
+  font-family: 'Fira Code', monospace;
+  width: 1.3em;
+}
+#s10 .cta-card {
+  position: relative;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,112,51,0.18), transparent 60%),
+    var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 2rem;
+  padding: clamp(1.4rem, 3vw, 2.6rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.7rem, 1.5vw, 1.2rem);
+  overflow: hidden;
+}
+#s10 .cta-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.2rem, 2.4vw, 1.9rem);
+  letter-spacing: -0.025em;
+  color: var(--foreground);
+  line-height: 1.1;
+}
+#s10 .cta-title em { color: var(--accent); font-style: italic; font-family: 'Instrument Serif', serif; font-weight: 400; }
+#s10 .cta-desc {
+  font-size: clamp(0.78rem, 1.1vw, 0.95rem);
+  color: var(--txt-70);
+  line-height: 1.55;
+}
+#s10 .cta-btn {
+  align-self: flex-start;
+  background: var(--accent);
+  color: #000;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  padding: clamp(0.7rem, 1.4vw, 1rem) clamp(1.3rem, 2.4vw, 1.8rem);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  letter-spacing: 0.01em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+#s10 .cta-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 28px var(--accent-glow);
+}
+#s10 .cta-btn::after { content: "→"; transition: transform 0.3s; }
+#s10 .cta-btn:hover::after { transform: translateX(4px); }
+
+/* ===========================================
+   NAVIGATION
+   =========================================== */
+.nav-dots {
+  position: fixed;
+  right: clamp(1rem, 2vw, 2rem);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  z-index: 100;
+}
+.nav-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+.nav-dot:hover { background: rgba(255,255,255,0.4); }
+.nav-dot.active {
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  transform: scale(1.4);
+}
+
+.slide-counter {
+  position: fixed;
+  bottom: clamp(0.8rem, 1.6vw, 1.4rem);
+  left: clamp(1rem, 2vw, 2rem);
+  font-family: 'Fira Code', monospace;
+  font-size: clamp(0.65rem, 0.9vw, 0.78rem);
+  letter-spacing: 0.1em;
+  color: var(--txt-40);
+  z-index: 100;
+}
+.slide-counter .current { color: var(--accent); }
+
+.brand-mark {
+  position: fixed;
+  bottom: clamp(0.8rem, 1.6vw, 1.4rem);
+  right: clamp(1rem, 2vw, 2rem);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(0.7rem, 0.95vw, 0.82rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--txt-40);
+  z-index: 100;
+}
+.brand-mark .accent { color: var(--accent); }
+
+/* === REVEAL ANIMATIONS === */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.slide.active .reveal { opacity: 1; transform: translateY(0); }
+.slide.active .d1 { transition-delay: 0.05s; }
+.slide.active .d2 { transition-delay: 0.15s; }
+.slide.active .d3 { transition-delay: 0.25s; }
+.slide.active .d4 { transition-delay: 0.35s; }
+.slide.active .d5 { transition-delay: 0.45s; }
+.slide.active .d6 { transition-delay: 0.55s; }
+.slide.active .d7 { transition-delay: 0.65s; }
+.slide.active .d8 { transition-delay: 0.75s; }
+
+/* ===========================================
+   LOGO — Sharp Metrics (persistent + cover)
+   =========================================== */
+.logo-mark {
+  position: fixed;
+  top: clamp(1rem, 2vw, 1.8rem);
+  left: clamp(1rem, 2vw, 1.8rem);
+  display: flex;
+  align-items: center;
+  gap: clamp(0.45rem, 0.9vw, 0.7rem);
+  z-index: 110;
+  text-decoration: none;
+  padding: 0.35rem 0.7rem 0.35rem 0.35rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: border-color 0.3s, background 0.3s, opacity 0.6s ease;
+  opacity: 0;
+}
+.logo-mark:hover {
+  border-color: rgba(255,112,51,0.4);
+  background: rgba(255,112,51,0.06);
+}
+.logo-mark img {
+  width: clamp(24px, 2.4vw, 34px);
+  height: clamp(24px, 2.4vw, 34px);
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.logo-mark:hover img { transform: rotate(8deg) scale(1.06); }
+.logo-mark-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.68rem, 0.95vw, 0.82rem);
+  letter-spacing: 0.02em;
+  color: var(--foreground);
+}
+.logo-mark-text .accent { color: var(--accent); }
+
+/* Cover hero logo (slide 1) */
+#s1 .cover-logo {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.6rem, 1.2vw, 1rem);
+  padding: 0.55rem 1rem 0.55rem 0.55rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  width: fit-content;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+#s1 .cover-logo img {
+  width: clamp(34px, 3vw, 46px);
+  height: clamp(34px, 3vw, 46px);
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.12);
+  object-fit: cover;
+}
+#s1 .cover-logo-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.78rem, 1.1vw, 1rem);
+  letter-spacing: 0.02em;
+  color: var(--foreground);
+}
+#s1 .cover-logo-text .accent { color: var(--accent); }
+#s1 .cover-logo-divider {
+  width: 1px;
+  height: clamp(14px, 1.8vw, 22px);
+  background: rgba(255,255,255,0.18);
+}
+#s1 .cover-logo-tag {
+  font-family: 'Fira Code', monospace;
+  font-size: clamp(0.6rem, 0.8vw, 0.72rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--txt-70);
+}
+
+/* === Stagger for cards === */
+.slide.active .stagger > * {
+  opacity: 0;
+  animation: stagger-in 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.slide.active .stagger > *:nth-child(1) { animation-delay: 0.10s; }
+.slide.active .stagger > *:nth-child(2) { animation-delay: 0.18s; }
+.slide.active .stagger > *:nth-child(3) { animation-delay: 0.26s; }
+.slide.active .stagger > *:nth-child(4) { animation-delay: 0.34s; }
+.slide.active .stagger > *:nth-child(5) { animation-delay: 0.42s; }
+.slide.active .stagger > *:nth-child(6) { animation-delay: 0.50s; }
+.slide.active .stagger > *:nth-child(7) { animation-delay: 0.58s; }
+@keyframes stagger-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+</style>
+</head>
+<body>
+
+<!-- === NOISE OVERLAY === -->
+<div class="noise"></div>
+
+<!-- === PERSISTENT LOGO (Sharp Metrics) — visible from slide 2 onwards === -->
+<a class="logo-mark" id="logoMark" href="https://sharpmetricsagency.com" target="_blank" rel="noopener noreferrer" aria-label="Sharp Metrics Agency">
+  <img src="data:image/webp;base64,UklGRk4FAABXRUJQVlA4IEIFAABURACdASqUAZQBPpFClksCgfkAASCWlu4XOtdq2aVf47/t/bJ/gMfp3OiWHQbhRV3jr8+XN39Yb+n0XBMIANJCmZ8+SiYpkR28i5etN0AGkhTNKCnrOkKZpQuXrTdABpH5izIuXrTdABpIUyhzw9bLVinIUzShcvWm5/6LrzrPfLb0mCmaULl6yL3ccuvWZcFy9aboANIRLenoFhSYKZpQuXrTcxOTFmCMoJ8D2kwUzShcvWm5icmJB7AsVU1LPlF2+vetNzGyZe5ZgAicvlsEGrEZgAgybreDEZPzfC7IuXrTc+wSqsiUV+kJraue9abmJ5MqMq5GtmdXQKviXCngJ2BeYQitBWbb17cbEPN97qMn509VMdpQuXrTc+wzKSG5d3fC/RuzTdwiHLwjWWgOZpQuXrSx8OZY3z5hzqHmRQRVy2RCD43aUmovNaVXuPqs+2yGG91GT9ArJZX0a+6ADO2aJ4BXj82wGLOaz3rTdABn4w4by0bYGTL3LMAZzqH+3mWSGmVP3FNu00Zl7lmAm603QATkf4z1VecPjmBxSPQANJCmaULl60pOwGVU9zb6aotwXL1pugA0kJdSPVuOZhpQuXrTdABpH5izBwZieTNKFy9aboAM96efz95ZFy9aboANJCmVo75gH4OdHbCXUHQAaSFM0oXLkI/PMuC5etN0AGkhTK0d9ZlwXL1pugA0kKZWjvrMuC5etN0AGkhTK0d9ZlwXL1puWAAA/v8Z7sz1hZVgq3H327p76Y1+k146lQfFIy8hPf9Ly+1r8hRWuXA1G+5q7ntI/sqlcb09mQdssPqbiioHl1BJT2UkSqwjigqdBI723qpvfklGIAC9wY+t7/1a5mhlJZ74l5MsxkPeNDL024eLVS04BjnUZumyd0K1/YCQwAwgGP/FIv4SmLo1XknIH/YwNZhwz16PY7//8aHnNW3B44PUU9fvvMXWgWmU8qz3nGN9nnk//ZbYnHZrtt/8k8Y7Mw8sUrQn/8BVv+aDBUohDvUfn6GOWx5hrBiazKK6HtjhO94cnXWojL/2s4P2A/Z7qTm9UJ4Egbg2lsg4wjioTx1svdpCcbrDi9JN2G4MyuyWTNQsl0VtQGNqbMCYLtf2nKtAnWAAtKQvBPGMC+w/iEBAnA2kwMn5c+s+RibnWF86LEfY2xGh5Urk28s/4C5LcTvk4E8iCSuB6Qmr8NwF6y3KcXTDBeMM+Db2smZZBAYl81AhHOcRtEI8Yzd0MJJ5i2jxFsjvFffswDqRTfmoMCQaXruf2v+iHhExvVhpdQ8z2unYpCs8+slfGHP9xHxDj8BQ1WZzi+o33KW+1DJyc7CVc4uzko/tMAJkWTy4tXmWhbrX/tOV+gAO8DAeGRTZWWTe6Oo8ChLermeZy5d9S5pYK9cuyBTBmBrgF6DctxBed/7KvjU7IEexkyOeeoGL9sv59rXTrvsqXUJX/9g7Yz3Z2fL8BxJxdT+PxxSP70Z2mMEudRIUXaMHiwkNAGPMez6ev4y3e9xnvNep45rqTR3c8ZUUq0PZ6N28+7Hm7jZBGmL6b1cffze6dr0ACPIC0vPYeOCLJN1bpFBA9JLpyJL68CkaaN7OAoLA4JaqaFlLGCSwljLJlxofL5nCouKQISmZd6eOdEBWxL29OuRfhlE0nH5eGgbFkfadr45Iok27+piSU/xZvWf2OI3fBaItc17psflZQkik9k6lGeLaROX0d4jQteljctM9HsMEM0Lnfwy/V6+xQslXnqbLjUfZFTGufr4/+4fx0LhLheCSB0xXYEesAAAAAA==" alt="Sharp Metrics" />
+  <span class="logo-mark-text">Sharp<span class="accent">Metrics</span></span>
+</a>
+
+<!-- ===========================================
+     SLIDE 1 — COVER
+     =========================================== -->
+<section id="s1" class="slide atmo active">
+  <div class="cover-grid">
+  <!-- RIGHT — Cover copy -->
+    <div class="cover-copy">
+      <span class="badge reveal d1">DIGITAL POSITIONING</span>
+      <h1 class="h1 reveal d2">Posizionamento <span class="accent">Digitale</span> per la Medicina Estetica</h1>
+      <p class="sub reveal d3">
+        Come strutturare una presenza online efficace per <strong>centri di odontoiatria
+        estetica</strong>, <strong>tricologia</strong>, <strong>epilazione laser</strong>,
+        <strong>rimozione tatuaggi</strong>, <strong>medicina estetica non invasiva</strong>
+        e <strong>micropigmentazione e trucco semipermanente</strong>: dal sito web alle campagne,
+        con la conoscenza delle specificità del settore.
+      </p>
+      <div class="cover-logo reveal d4">
+        <img src="data:image/webp;base64,UklGRk4FAABXRUJQVlA4IEIFAABURACdASqUAZQBPpFClksCgfkAASCWlu4XOtdq2aVf47/t/bJ/gMfp3OiWHQbhRV3jr8+XN39Yb+n0XBMIANJCmZ8+SiYpkR28i5etN0AGkhTNKCnrOkKZpQuXrTdABpH5izIuXrTdABpIUyhzw9bLVinIUzShcvWm5/6LrzrPfLb0mCmaULl6yL3ccuvWZcFy9aboANIRLenoFhSYKZpQuXrTcxOTFmCMoJ8D2kwUzShcvWm5icmJB7AsVU1LPlF2+vetNzGyZe5ZgAicvlsEGrEZgAgybreDEZPzfC7IuXrTc+wSqsiUV+kJraue9abmJ5MqMq5GtmdXQKviXCngJ2BeYQitBWbb17cbEPN97qMn509VMdpQuXrTc+wzKSG5d3fC/RuzTdwiHLwjWWgOZpQuXrSx8OZY3z5hzqHmRQRVy2RCD43aUmovNaVXuPqs+2yGG91GT9ArJZX0a+6ADO2aJ4BXj82wGLOaz3rTdABn4w4by0bYGTL3LMAZzqH+3mWSGmVP3FNu00Zl7lmAm603QATkf4z1VecPjmBxSPQANJCmaULl60pOwGVU9zb6aotwXL1pugA0kJdSPVuOZhpQuXrTdABpH5izBwZieTNKFy9aboAM96efz95ZFy9aboANJCmVo75gH4OdHbCXUHQAaSFM0oXLkI/PMuC5etN0AGkhTK0d9ZlwXL1pugA0kKZWjvrMuC5etN0AGkhTK0d9ZlwXL1puWAAA/v8Z7sz1hZVgq3H327p76Y1+k146lQfFIy8hPf9Ly+1r8hRWuXA1G+5q7ntI/sqlcb09mQdssPqbiioHl1BJT2UkSqwjigqdBI723qpvfklGIAC9wY+t7/1a5mhlJZ74l5MsxkPeNDL024eLVS04BjnUZumyd0K1/YCQwAwgGP/FIv4SmLo1XknIH/YwNZhwz16PY7//8aHnNW3B44PUU9fvvMXWgWmU8qz3nGN9nnk//ZbYnHZrtt/8k8Y7Mw8sUrQn/8BVv+aDBUohDvUfn6GOWx5hrBiazKK6HtjhO94cnXWojL/2s4P2A/Z7qTm9UJ4Egbg2lsg4wjioTx1svdpCcbrDi9JN2G4MyuyWTNQsl0VtQGNqbMCYLtf2nKtAnWAAtKQvBPGMC+w/iEBAnA2kwMn5c+s+RibnWF86LEfY2xGh5Urk28s/4C5LcTvk4E8iCSuB6Qmr8NwF6y3KcXTDBeMM+Db2smZZBAYl81AhHOcRtEI8Yzd0MJJ5i2jxFsjvFffswDqRTfmoMCQaXruf2v+iHhExvVhpdQ8z2unYpCs8+slfGHP9xHxDj8BQ1WZzi+o33KW+1DJyc7CVc4uzko/tMAJkWTy4tXmWhbrX/tOV+gAO8DAeGRTZWWTe6Oo8ChLermeZy5d9S5pYK9cuyBTBmBrgF6DctxBed/7KvjU7IEexkyOeeoGL9sv59rXTrvsqXUJX/9g7Yz3Z2fL8BxJxdT+PxxSP70Z2mMEudRIUXaMHiwkNAGPMez6ev4y3e9xnvNep45rqTR3c8ZUUq0PZ6N28+7Hm7jZBGmL6b1cffze6dr0ACPIC0vPYeOCLJN1bpFBA9JLpyJL68CkaaN7OAoLA4JaqaFlLGCSwljLJlxofL5nCouKQISmZd6eOdEBWxL29OuRfhlE0nH5eGgbFkfadr45Iok27+piSU/xZvWf2OI3fBaItc17psflZQkik9k6lGeLaROX0d4jQteljctM9HsMEM0Lnfwy/V6+xQslXnqbLjUfZFTGufr4/+4fx0LhLheCSB0xXYEesAAAAAA==" alt="Sharp Metrics logo" />
+        <span class="cover-logo-text">Sharp<span class="accent">Metrics</span></span>
+        <span class="cover-logo-divider"></span>
+        <span class="cover-logo-tag">Agency</span>
+      </div>
+    </div>
+    <!-- LEFT — Settori coperti + patient journey -->
+    <div class="cover-visual">
+      <!-- 6 settori che il documento copre -->
+      <div class="sectors-card reveal d1">
+        <div class="accent-line"></div>
+        <div class="sectors-label">Settori Coperti · 06</div>
+        <div class="sectors-grid stagger">
+          <div class="sector-chip">
+            <span class="sector-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.5C8 1.5 2 4 2 9c0 5 4 9 10 13 6-4 10-8 10-13 0-5-6-7.5-10-3.5z"/></svg>
+            </span>
+            Odontoiatria Estetica
+          </div>
+          <div class="sector-chip">
+            <span class="sector-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c0-6 4-10 9-10s9 4 9 10"/><path d="M7 13c-1-3 0-7 5-10"/><path d="M17 13c1-3 0-7-5-10"/></svg>
+            </span>
+            Tricologia
+          </div>
+          <div class="sector-chip">
+            <span class="sector-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l16 16"/><path d="M4 4l4 1M4 4l1 4"/><circle cx="16" cy="16" r="3"/></svg>
+            </span>
+            Epilazione Laser
+          </div>
+          <div class="sector-chip">
+            <span class="sector-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M5.5 5.5l13 13"/></svg>
+            </span>
+            Rimozione Tatuaggi
+          </div>
+          <div class="sector-chip">
+            <span class="sector-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3"/></svg>
+            </span>
+            Medicina Estetica Non Invasiva
+          </div>
+          <div class="sector-chip">
+            <span class="sector-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4l5 5-11 11H4v-5L15 4z"/><path d="M13 6l5 5"/></svg>
+            </span>
+            Micropigmentazione & Trucco Semipermanente
+          </div>
+        </div>
+      </div>
+
+      <!-- Patient journey -->
+      <div class="journey-card reveal d2">
+        <div class="journey-label">Patient Journey Digitale</div>
+        <div class="journey-flow">
+          <div class="journey-step">
+            <span class="journey-step-num">01</span>
+            <span class="journey-step-label">Ricerca</span>
+          </div>
+          <span class="journey-arrow">→</span>
+          <div class="journey-step">
+            <span class="journey-step-num">02</span>
+            <span class="journey-step-label">Valutazione</span>
+          </div>
+          <span class="journey-arrow">→</span>
+          <div class="journey-step">
+            <span class="journey-step-num">03</span>
+            <span class="journey-step-label">Prenotazione</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 2 — Il paziente decide online
+     =========================================== -->
+<section id="s2" class="slide atmo">
+  <div class="slide-content">
+    <div class="grid-2">
+      <div>
+        <span class="kicker reveal d1">02 · Comportamento del paziente</span>
+        <h2 class="h2 reveal d2" style="margin-top: 0.8rem;">
+          Il Paziente Estetico<br/>
+          <span class="accent">Decide Online</span>
+        </h2>
+        <p class="lead reveal d3" style="margin-top: 1rem;">
+          Il percorso dalla prima ricerca alla prenotazione coinvolge <strong style="color:#fff">settimane
+          o mesi</strong> di valutazione: recensioni, confronto tra centri, contenuti
+          prima/dopo, verifica delle credenziali. La presenza digitale è lo strumento con cui il
+          centro viene <strong style="color:#fff">valutato, confrontato e scelto</strong> prima del primo contatto.
+        </p>
+        <p class="source reveal d4">*Fonti: Think with Google Health, Semrush Healthcare Report 2024</p>
+      </div>
+      <div class="stats stagger">
+        <div class="stat">
+          <div class="accent-line"></div>
+          <div class="stat-num"><span class="accent">83</span>%</div>
+          <div class="stat-label">Ricerche online</div>
+          <div class="stat-desc">dei pazienti effettua ricerche online prima di prenotare</div>
+        </div>
+        <div class="stat">
+          <div class="accent-line"></div>
+          <div class="stat-num"><span class="accent">2–8</span></div>
+          <div class="stat-label">Settimane di valutazione</div>
+          <div class="stat-desc">ciclo medio per trattamenti ad alto investimento</div>
+        </div>
+        <div class="stat">
+          <div class="accent-line"></div>
+          <div class="stat-num"><span class="accent">67</span>%</div>
+          <div class="stat-label">Recensioni decisive</div>
+          <div class="stat-desc">legge recensioni online come fattore determinante nella scelta</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 3 — Criticità
+     =========================================== -->
+<section id="s3" class="slide atmo">
+  <div class="slide-content">
+    <span class="kicker reveal d1">03 · Diagnosi</span>
+    <h2 class="h2 reveal d2" style="margin-top: 0.5rem;">
+      Le Criticità più Frequenti<br/>nei <span class="accent">Centri Estetici</span>
+    </h2>
+    <p class="lead reveal d3" style="margin-top: 0.6rem;">
+      Professionisti di valore che online risultano <strong style="color:#fff">indistinguibili dalla concorrenza</strong>.
+    </p>
+    <div class="grid-3 stagger">
+      <div class="crit">
+        <span class="crit-num">01</span>
+        <h3 class="crit-title">Sito senza autorevolezza clinica</h3>
+        <p class="crit-desc">Sito generico, senza info su professionisti e tecnologie.</p>
+      </div>
+      <div class="crit">
+        <span class="crit-num">02</span>
+        <h3 class="crit-title">Keyword ad alto CPC non presidiate</h3>
+        <p class="crit-desc">Termini come "faccette dentali Milano" erodono il budget senza struttura ottimizzata.</p>
+      </div>
+      <div class="crit">
+        <span class="crit-num">03</span>
+        <h3 class="crit-title">Assenza di SEO per trattamenti</h3>
+        <p class="crit-desc">Ogni trattamento ha il proprio universo di ricerca: non presidiarlo significa perdere pazienti early-stage.</p>
+      </div>
+      <div class="crit">
+        <span class="crit-num">04</span>
+        <h3 class="crit-title">Meta Ads non calibrate</h3>
+        <p class="crit-desc">Funzionano in awareness e considerazione, non in conversione diretta su pubblico freddo.</p>
+      </div>
+      <div class="crit">
+        <span class="crit-num">05</span>
+        <h3 class="crit-title">Reputazione online non presidiata</h3>
+        <p class="crit-desc">Recensioni su Google e Miodottore: asset fondamentale lasciato al caso.</p>
+      </div>
+      <div class="crit">
+        <span class="crit-num">06</span>
+        <h3 class="crit-title">Tracciamento assente o errato</h3>
+        <p class="crit-desc">Senza tracciare chiamate e consulenze per canale, impossibile calcolare il costo reale per paziente.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 4 — Sito Web & UX
+     =========================================== -->
+<section id="s4" class="slide atmo">
+  <div class="slide-content">
+    <div class="grid-split">
+      <!-- Mockup sito clinico — grande, leggibile, riconoscibile -->
+      <div class="mock reveal d1">
+        <div class="mock-chrome">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="url">centroestetico.it/trattamenti</span>
+        </div>
+        <div class="mock-body">
+          <div class="mock-nav">
+            <span>CENTRO<span class="accent">CLINICO</span></span>
+            <span class="menu"><span>Trattamenti</span><span>Team</span><span>Risultati</span></span>
+          </div>
+          <div class="mock-hero">
+            <span class="h">Trattamenti estetici<br/>su misura per te</span>
+            <span class="p">Tecnologie certificate · Team medico specializzato</span>
+            <span class="cta">Prenota consulenza →</span>
+          </div>
+          <span class="mock-section-label">— Trattamenti</span>
+          <div class="mock-grid">
+            <div class="mock-tile t1">Faccette dentali</div>
+            <div class="mock-tile t2">Tricologia</div>
+            <div class="mock-tile t3">Laser</div>
+          </div>
+          <div class="mock-booking">
+            <div class="lbl">Prima visita gratuita<span>Disponibilità in 48h</span></div>
+            <span class="btn-mini">Prenota</span>
+          </div>
+        </div>
+      </div>
+      <!-- Content -->
+      <div>
+        <span class="kicker reveal d1">04 · Sito web & UX</span>
+        <h2 class="h2 reveal d2" style="margin-top: 0.6rem;">
+          Sito Web & UX:<br/>
+          <span class="accent">Credibilità Clinica</span>
+        </h2>
+        <p class="lead reveal d3" style="margin-top: 0.8rem;">
+          Il sito non è una vetrina commerciale: è il <strong style="color:#fff">primo strumento di valutazione
+          della credibilità professionale</strong>. Deve costruire fiducia nella fase di valutazione e facilitare
+          la conversione nella fase di decisione.
+        </p>
+        <div class="callout reveal d4">
+          Sharp Metrics non produce materiale creativo internamente: collaboriamo con il reparto creativo del centro o aiutiamo a individuare professionisti adatti al progetto.
+        </div>
+        <div class="features stagger" style="margin-top: 1rem;">
+          <div class="feat"><span class="feat-arrow">→</span> Pagine dedicate per ogni trattamento</div>
+          <div class="feat"><span class="feat-arrow">→</span> Team medico con credenziali e specializzazioni</div>
+          <div class="feat"><span class="feat-arrow">→</span> Galleria risultati (conforme alle normative)</div>
+          <div class="feat"><span class="feat-arrow">→</span> Sistema di prenotazione consulenza integrato</div>
+          <div class="feat"><span class="feat-arrow">→</span> FAQ per trattamento e recensioni verificate</div>
+          <div class="feat" style="border-bottom: none;"><span class="feat-arrow">→</span> Ottimizzazione mobile e velocità di caricamento</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 5 — SEO & Contenuti
+     =========================================== -->
+<section id="s5" class="slide atmo">
+  <div class="slide-content">
+    <div class="head-block">
+      <span class="kicker reveal d1">05 · SEO & Contenuti</span>
+      <h2 class="h2 reveal d2">SEO & <span class="accent">Contenuti Informativi</span></h2>
+    </div>
+    <div class="grid-2">
+      <!-- LEFT — Why + chips -->
+      <div class="why">
+        <h3 class="why-title reveal d3">Perché è rilevante</h3>
+        <p class="lead reveal d4">
+          Il paziente che cerca <em style="font-family: 'Instrument Serif', serif; color: #fff">"faccette dentali composito vs porcellana"</em> o
+          <em style="font-family: 'Instrument Serif', serif; color: #fff">"trapianto FUE effetti collaterali"</em> è nella fase di
+          valutazione più profonda. Contenuti autorevoli in questa fase costruiscono
+          <strong style="color: #fff">fiducia prima della scelta del centro</strong>.
+        </p>
+        <div class="chips stagger">
+          <div class="chip">Keyword research per trattamento e area</div>
+          <div class="chip">Ottimizzazione on-page pagine trattamento</div>
+          <div class="chip">Google Business Profile ottimizzato</div>
+          <div class="chip">Strategia FAQ e articoli di approfondimento</div>
+          <div class="chip wide">Gestione recensioni online · Ottimizzazione per Miodottore e portali di settore</div>
+        </div>
+      </div>
+      <!-- RIGHT — Funnel -->
+      <div class="funnel reveal d3">
+        <div class="funnel-stage">
+          <div class="funnel-label">Fase 1: Early Stage</div>
+          <div class="funnel-desc">Contenuti informativi, FAQ, articoli blog</div>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-label">Fase 2: Mid Stage</div>
+          <div class="funnel-desc">Pagine trattamento ottimizzate, confronti tra tecnologie</div>
+        </div>
+        <div class="funnel-stage">
+          <div class="funnel-label">Fase 3: Decision Stage</div>
+          <div class="funnel-desc">Google Business Profile, recensioni, landing page prenotazione</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 6 — Google Ads
+     =========================================== -->
+<section id="s6" class="slide atmo">
+  <div class="slide-content">
+    <div class="grid-2">
+      <div>
+        <span class="kicker reveal d1">06 · Google Ads</span>
+        <h2 class="h2 reveal d2" style="margin-top: 0.6rem;">
+          Google Ads:<br/>
+          Intercettare la<br/>
+          <span class="accent">Domanda Consapevole</span>
+        </h2>
+        <p class="lead reveal d3" style="margin-top: 1rem;">
+          Il paziente cerca attivamente un centro o un trattamento. È il canale con il
+          <strong style="color: #fff">più alto intento di acquisto</strong>, ma anche con i CPC più elevati.
+          Una struttura ottimizzata è indispensabile per un costo per consulenza sostenibile.
+        </p>
+      </div>
+      <div class="cards stagger">
+        <div class="card">
+          <div class="accent-line"></div>
+          <div class="card-icon">
+            <svg width="55%" height="55%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          </div>
+          <h3 class="card-title">Campagne per trattamento</h3>
+          <p class="card-desc">Gruppi di annunci separati per trattamento e area geografica, con landing page dedicate.</p>
+        </div>
+        <div class="card">
+          <div class="accent-line"></div>
+          <div class="card-icon">
+            <svg width="55%" height="55%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>
+          </div>
+          <h3 class="card-title">Gestione CPC</h3>
+          <p class="card-desc">Ottimizzazione di Quality Score e offerte per keyword ad alta competizione.</p>
+        </div>
+        <div class="card">
+          <div class="accent-line"></div>
+          <div class="card-icon">
+            <svg width="55%" height="55%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </div>
+          <h3 class="card-title">Remarketing qualificato</h3>
+          <p class="card-desc">Campagne su chi ha visitato pagine trattamento, calibrate sulla fase decisionale.</p>
+        </div>
+        <div class="card">
+          <div class="accent-line"></div>
+          <div class="card-icon">
+            <svg width="55%" height="55%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          </div>
+          <h3 class="card-title">Conformità normativa</h3>
+          <p class="card-desc">Annunci e landing page conformi alle policy sulla pubblicità sanitaria in Italia.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 7 — Meta Ads
+     =========================================== -->
+<section id="s7" class="slide atmo">
+  <div class="slide-content">
+    <span class="kicker reveal d1">07 · Meta Ads · Funnel</span>
+    <h2 class="h2 reveal d2" style="margin-top: 0.4rem;">
+      Meta Ads: <span class="drama accent">Funnel Progressivo</span><br/>
+      per il Ciclo Decisionale
+    </h2>
+    <p class="lead reveal d3" style="margin-top: 0.8rem;">
+      Meta Ads funziona in <strong style="color: #fff">awareness e considerazione</strong>, non in conversione diretta
+      su pubblico freddo. La struttura corretta prevede un funnel progressivo che accompagna il paziente nel tempo.
+    </p>
+    <div class="callout reveal d4" style="background: rgba(255,112,51,0.12); border: 1px solid rgba(255,112,51,0.35); border-radius: 0.8rem; padding: clamp(0.7rem, 1.4vw, 1rem) clamp(0.9rem, 1.6vw, 1.2rem); margin-top: 1rem; font-size: clamp(0.78rem, 1.1vw, 0.95rem); color: var(--txt-80); line-height: 1.5; display: flex; gap: 0.7rem;">
+      <span style="color: var(--accent); font-size: 1.1em; flex-shrink: 0;">▸</span>
+      La performance dipende dalla qualità del materiale visivo. Coordiniamo la strategia con il team creativo del centro o professionisti selezionati.
+    </div>
+    <div class="steps stagger">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3 class="step-title">Awareness</h3>
+        <p class="step-desc">Campagne su pubblici freddi per interesse e comportamento.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3 class="step-title">Considerazione</h3>
+        <p class="step-desc">Retargeting su visitatori di pagine trattamento.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3 class="step-title">Conversione</h3>
+        <p class="step-desc">Lead form nativi e messaggi calibrati per ridurre l'attrito.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 8 — Tracciamenti
+     =========================================== -->
+<section id="s8" class="slide atmo">
+  <div class="slide-content">
+    <span class="kicker reveal d1">08 · Tracciamenti & Analytics</span>
+    <h2 class="h2 reveal d2" style="margin-top: 0.4rem;">
+      Tracciamenti & Analytics:<br/>
+      Il <span class="accent">Costo per Paziente</span> Reale
+    </h2>
+    <p class="lead reveal d3" style="margin-top: 0.6rem;">
+      Dove il costo per acquisizione è significativo, avere dati precisi su quale canale genera quali risultati è la
+      <strong style="color: #fff">base di ogni decisione di budget</strong>.
+    </p>
+    <div class="grid-3 stagger">
+      <div class="track">
+        <div class="accent-line"></div>
+        <div class="track-icon">
+          <svg width="55%" height="55%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <h3 class="track-title">GA4 Configurato</h3>
+        <p class="track-desc">Eventi personalizzati: richiesta consulenza, prenotazione, chiamata.</p>
+      </div>
+      <div class="track">
+        <div class="accent-line"></div>
+        <div class="track-icon">
+          <svg width="55%" height="55%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <h3 class="track-title">Call Tracking</h3>
+        <p class="track-desc">Tracciamento telefonate per canale con registrazione opzionale.</p>
+      </div>
+      <div class="track">
+        <div class="accent-line"></div>
+        <div class="track-icon">
+          <svg width="55%" height="55%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        </div>
+        <h3 class="track-title">Google Tag Manager</h3>
+        <p class="track-desc">Gestione centralizzata dei tag senza interventi sul codice.</p>
+      </div>
+      <div class="track">
+        <div class="accent-line"></div>
+        <div class="track-icon">
+          <svg width="55%" height="55%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </div>
+        <h3 class="track-title">Pixel & Insight Tag</h3>
+        <p class="track-desc">Meta Pixel e LinkedIn Tag configurati per retargeting e lookalike, nel rispetto del GDPR.</p>
+      </div>
+      <div class="track">
+        <div class="accent-line"></div>
+        <div class="track-icon">
+          <svg width="55%" height="55%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-6"/></svg>
+        </div>
+        <h3 class="track-title">Dashboard KPI Mensile</h3>
+        <p class="track-desc">Report con impression, clic, consulenze e costo per consulenza per canale.</p>
+      </div>
+      <div class="track">
+        <div class="accent-line"></div>
+        <div class="track-icon">
+          <svg width="55%" height="55%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M8.7 7.7l6.6 8.6"/></svg>
+        </div>
+        <h3 class="track-title">Attribuzione Multi-Touch</h3>
+        <p class="track-desc">Analisi del percorso completo del paziente tra i touchpoint digitali.</p>
+      </div>
+    </div>
+    <div class="ctx-note reveal d8">
+      <span><strong>Un dato di contesto:</strong> Anche una riduzione del 20% del costo per consulenza, a parità di budget, si traduce in più pazienti e un ROI misurabile.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 9 — Comparativa Sharp Metrics
+     =========================================== -->
+<section id="s9" class="slide atmo">
+  <div class="slide-content">
+    <span class="kicker reveal d1">09 · Differenziale</span>
+    <h2 class="h2 reveal d2" style="margin-top: 0.4rem;">
+      Perché Affidarsi a <span class="accent">Sharp Metrics</span>
+    </h2>
+    <div class="table-wrap reveal d3">
+      <table>
+        <thead>
+          <tr>
+            <th>Competenza</th>
+            <th>Agenzia Generalista</th>
+            <th class="sharp-col">Sharp Metrics</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">Ciclo decisionale paziente</td>
+            <td class="generalist">Approccio generico</td>
+            <td class="sharp sharp-col">Funnel calibrato per trattamento</td>
+          </tr>
+          <tr>
+            <td class="label">CPC su keyword ad alta competizione</td>
+            <td class="generalist">Budget non ottimizzato</td>
+            <td class="sharp sharp-col">Struttura granulare per trattamento</td>
+          </tr>
+          <tr>
+            <td class="label">Conformità normativa campagne sanitarie</td>
+            <td class="generalist">Rischio disapprovazione</td>
+            <td class="sharp sharp-col">Gestione consapevole delle policy</td>
+          </tr>
+          <tr>
+            <td class="label">SEO per termini tecnici</td>
+            <td class="generalist">Keyword generiche</td>
+            <td class="sharp sharp-col">Contenuti specifici per trattamento</td>
+          </tr>
+          <tr>
+            <td class="label">Tracciamento costo per consulenza</td>
+            <td class="generalist">Solo clic e impression</td>
+            <td class="sharp sharp-col">Attribuzione per canale</td>
+          </tr>
+          <tr>
+            <td class="label">Coordinamento creativi</td>
+            <td class="generalist">Non gestito</td>
+            <td class="sharp sharp-col">Network di professionisti verificati</td>
+          </tr>
+          <tr>
+            <td class="label">Reportistica</td>
+            <td class="generalist">Report operativi standard</td>
+            <td class="sharp sharp-col">KPI allineati agli obiettivi del centro</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===========================================
+     SLIDE 10 — CTA Finale
+     =========================================== -->
+<section id="s10" class="slide atmo">
+  <div class="cta-wrap" style="padding: var(--slide-padding);">
+    <!-- LEFT -->
+    <div class="cta-info">
+      <span class="kicker reveal d1">10 · Prossimo passo</span>
+      <h2 class="h2 reveal d2">
+        Un Approccio Modulare:<br/>
+        <span class="drama accent">Partiamo dalla Vostra Situazione</span>
+      </h2>
+      <p class="lead reveal d3">
+        Ogni centro ha una situazione diversa. Partiamo sempre da un'<strong style="color: #fff">analisi della
+        presenza digitale attuale</strong> e definiamo insieme l'intervento più adeguato agli obiettivi.
+      </p>
+      <p class="lead reveal d4" style="font-size: clamp(0.78rem, 1.1vw, 0.92rem);">
+        Dalla chiamata conoscitiva all'analisi della presenza digitale, fino alla proposta su misura: un percorso senza impegno per definire le priorità di intervento.
+      </p>
+      <div class="contact-block reveal d5">
+        <span class="contact-label">Contatti</span>
+        <div class="contact-row"><span class="sym">▸</span> sharpmetricsagency.com</div>
+        <div class="contact-row"><span class="sym">@</span> info@sharpmetricsagency.com</div>
+        <div class="contact-row"><span class="sym">☏</span> (+39) 327 288 4015</div>
+      </div>
+    </div>
+
+    <!-- RIGHT — CTA Card -->
+    <div class="cta-card reveal d3">
+      <div class="accent-line"></div>
+      <span class="kicker">Meeting Gratuito</span>
+      <h3 class="cta-title">Nessun impegno.<br/><em>Solo dati e priorità.</em></h3>
+      <p class="cta-desc">
+        Solo un confronto sulla vostra situazione digitale attuale. Analizziamo sito, campagne,
+        posizionamento organico, reputazione online e tracciamenti, poi definiamo insieme le priorità.
+      </p>
+      <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1ju8l-DyS69NiadaWUH_91CgpcZ9v6ZALgYVXK6GGuUBgB8-rOfg2wMQ18h1YBxTR90NQxbI0f" target="_blank" rel="noopener noreferrer" class="cta-btn">Prenota una call</a>
+    </div>
+  </div>
+</section>
+
+<!-- === NAVIGATION DOTS === -->
+<nav class="nav-dots" id="navDots"></nav>
+
+<!-- === SLIDE COUNTER === -->
+<div class="slide-counter">
+  <span class="current" id="currentSlide">01</span> / <span id="totalSlides">10</span>
+</div>
+
+
+<!-- === NAVIGATION & ACTIVE-SLIDE JS === -->
+<script>
+(function () {
+  const slides = document.querySelectorAll('.slide');
+  const dotsContainer = document.getElementById('navDots');
+  const counter = document.getElementById('currentSlide');
+  const total = document.getElementById('totalSlides');
+  total.textContent = String(slides.length).padStart(2, '0');
+
+  // Build nav dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Vai alla slide ' + (i + 1));
+    dot.addEventListener('click', () => goTo(i));
+    dotsContainer.appendChild(dot);
+  });
+
+  let current = 0;
+
+  const logoMark = document.getElementById('logoMark');
+
+  function setActive(idx) {
+    slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+    document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+    counter.textContent = String(idx + 1).padStart(2, '0');
+    // Hide persistent logo on cover (slide 1) — cover already has the hero logo
+    if (logoMark) logoMark.style.opacity = idx === 0 ? '0' : '1';
+    if (logoMark) logoMark.style.pointerEvents = idx === 0 ? 'none' : 'auto';
+    current = idx;
+  }
+
+  function goTo(idx) {
+    if (idx < 0 || idx >= slides.length) return;
+    slides[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setActive(idx);
+  }
+
+  // Observer to detect which slide is visible during scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting && e.intersectionRatio >= 0.6) {
+        const idx = Array.from(slides).indexOf(e.target);
+        setActive(idx);
+      }
+    });
+  }, { threshold: [0.6] });
+  slides.forEach((s) => observer.observe(s));
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (['ArrowDown', 'ArrowRight', ' ', 'PageDown'].includes(e.key)) {
+      e.preventDefault(); goTo(current + 1);
+    } else if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) {
+      e.preventDefault(); goTo(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault(); goTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault(); goTo(slides.length - 1);
+    }
+  });
+
+  // Click navigation (left/right halves of viewport)
+  document.addEventListener('click', (e) => {
+    // Ignore clicks on interactive elements
+    if (e.target.closest('a, button, .nav-dot, .cta-btn')) return;
+    const x = e.clientX;
+    const w = window.innerWidth;
+    if (x > w / 2) goTo(current + 1);
+    else goTo(current - 1);
+  });
+
+  setActive(0);
+})();
+</script>
+</body>
+</html>
