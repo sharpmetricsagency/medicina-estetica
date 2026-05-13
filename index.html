@@ -2,7 +2,8 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#000000" />
 <title>Posizionamento Digitale per la Medicina Estetica — Sharp Metrics</title>
 <!-- === FONTS: Sharp Metrics official stack === -->
 <style>
@@ -1173,6 +1174,248 @@ body {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+/* ===========================================
+   RESPONSIVE — Mobile-first retrofit
+   Standard 16:9 desktop preserved; below 1024px
+   layouts collapse to single column, tabelle
+   diventano card impilate, swipe touch attivo.
+   =========================================== */
+
+/* Tablet landscape — light reduction */
+@media (max-width: 1024px) {
+  :root {
+    --slide-padding: clamp(0.9rem, 4vw, 2.4rem);
+  }
+}
+
+/* Tablet portrait & smartphone landscape — collapse all 2-col grids */
+@media (max-width: 768px) {
+  /* Allow slides to be taller than viewport on mobile (vertical scroll within slide) */
+  html { scroll-snap-type: y proximity; }
+  body { -webkit-text-size-adjust: 100%; }
+  .slide {
+    min-height: 100dvh;
+    height: auto;
+    overflow: visible;
+    padding-top: clamp(3rem, 9vw, 4.2rem);
+    padding-bottom: clamp(2.5rem, 8vw, 3.6rem);
+  }
+  .slide-content {
+    overflow: visible;
+    max-height: none;
+    padding: 0 clamp(1rem, 5vw, 1.6rem);
+    justify-content: flex-start;
+    gap: clamp(1rem, 4vw, 1.6rem);
+  }
+
+  /* === Collapse all 2-col grids to single column === */
+  #s1 .cover-grid,
+  #s2 .grid-2,
+  #s4 .grid-split,
+  #s5 .grid-2,
+  #s6 .grid-2,
+  #s10 .cta-wrap {
+    grid-template-columns: 1fr;
+    gap: clamp(1.4rem, 5vw, 2rem);
+    height: auto;
+    padding: 0 clamp(1rem, 5vw, 1.6rem);
+  }
+
+  /* === SLIDE 1: copy first, visual after === */
+  #s1 .cover-grid { padding-top: clamp(2.5rem, 8vw, 3.5rem); }
+  #s1 .cover-copy { order: 1; }
+  #s1 .cover-visual { order: 2; height: auto; }
+  #s1 h1 { font-size: clamp(1.7rem, 7.5vw, 2.6rem); }
+  #s1 .sub { font-size: 0.95rem; max-width: none; line-height: 1.5; }
+  #s1 .sectors-grid { grid-template-columns: 1fr 1fr; gap: 0.55rem; }
+  #s1 .sector-chip {
+    font-size: 0.78rem;
+    white-space: normal;
+    line-height: 1.3;
+    padding: 0.65rem 0.75rem;
+  }
+  #s1 .sector-icon { width: 1.65rem; height: 1.65rem; }
+  #s1 .journey-flow {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+    justify-items: center;
+  }
+  #s1 .journey-arrow { transform: rotate(90deg); font-size: 1.1rem; }
+  #s1 .cover-logo { padding: 0.45rem 0.85rem 0.45rem 0.45rem; }
+  #s1 .badge { font-size: 0.66rem; padding: 0.35rem 0.7rem; }
+
+  /* === SLIDE 2: stats stay 2-col but stat:nth-child(3) full-width === */
+  #s2 .stats { grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+  #s2 .stat:nth-child(3) { grid-column: 1 / -1; }
+  #s2 .stat { padding: 0.95rem; }
+  #s2 .stat-num { font-size: clamp(1.8rem, 9vw, 2.6rem); }
+
+  /* === SLIDE 3: 3-col grid → 2-col on tablet, 1-col on phone === */
+  #s3 .grid-3 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 0.7rem;
+    margin-top: 0.8rem;
+  }
+  #s3 .crit { padding: 0.85rem; }
+
+  /* === SLIDE 4: text first, mockup after; mockup larger on mobile === */
+  #s4 .features { order: 1; }
+  #s4 .mock {
+    order: 2;
+    max-width: min(95%, 340px);
+    margin: 0 auto;
+  }
+  #s4 .callout { padding: 0.85rem 1rem; font-size: 0.85rem; }
+
+  /* === SLIDE 5: chips 2-col, funnel full-width === */
+  #s5 .grid-2 { grid-template-columns: 1fr; align-items: flex-start; }
+  #s5 .chips { grid-template-columns: 1fr 1fr; gap: 0.55rem; }
+  #s5 .chip.wide { grid-column: span 2; }
+  #s5 .funnel-stage:nth-child(2),
+  #s5 .funnel-stage:nth-child(3) { width: 100%; }
+
+  /* === SLIDE 6: cards stay 2-col, tighter spacing === */
+  #s6 .cards { grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+  #s6 .card { padding: 0.95rem; }
+
+  /* === SLIDE 7: funnel steps stack vertically === */
+  #s7 .steps {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+    margin-top: 1.2rem;
+  }
+  #s7 .step-title { font-size: clamp(1.2rem, 5.5vw, 1.6rem); }
+
+  /* === SLIDE 8: 3-col → 2-col on tablet, 1-col on phone === */
+  #s8 .grid-3 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 0.7rem;
+    margin-top: 0.8rem;
+  }
+  #s8 .track { padding: 0.9rem; }
+
+  /* === SLIDE 9: comparison table → stacked cards === */
+  #s9 .table-wrap { overflow-x: visible; border: none; background: transparent; border-radius: 0; }
+  #s9 table, #s9 thead, #s9 tbody, #s9 tr, #s9 th, #s9 td { display: block; width: 100%; }
+  #s9 thead { display: none; }
+  #s9 tr {
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0.7rem;
+    background: var(--surface);
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.7rem;
+  }
+  #s9 tr:last-child { margin-bottom: 0; }
+  #s9 td { border: none !important; padding: 0 0 0.5rem 0; font-size: 0.84rem; }
+  #s9 td:last-child { padding-bottom: 0; }
+  #s9 td.label {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border) !important;
+  }
+  #s9 td.generalist::before { content: "✗ Generalisti: "; color: #ff5252; font-weight: 600; }
+  #s9 td.sharp::before { content: "✓ Sharp Metrics: "; color: var(--accent); font-weight: 700; }
+  #s9 .sharp-col { background: transparent; }
+
+  /* === SLIDE 10: info first, CTA card after; CTA button stretch === */
+  #s10 .cta-info { order: 1; }
+  #s10 .cta-card { order: 2; padding: 1.3rem; border-radius: 1.4rem; }
+  #s10 .cta-btn {
+    align-self: stretch;
+    justify-content: center;
+    text-align: center;
+    padding: 0.95rem 1.2rem;
+    font-size: 0.95rem;
+  }
+  #s10 .contact-row { font-size: 0.9rem; }
+
+  /* === UI chrome smaller on mobile === */
+  .logo-mark {
+    top: 0.7rem; left: 0.7rem;
+    padding: 0.25rem 0.6rem 0.25rem 0.25rem;
+    gap: 0.45rem;
+  }
+  .logo-mark img { width: 26px; height: 26px; }
+  .logo-mark-text { font-size: 0.7rem; }
+  .nav-dots { right: 0.55rem; gap: 0.45rem; }
+  .nav-dot { width: 6px; height: 6px; }
+  .nav-dot.active { transform: scale(1.3); }
+  .slide-counter { font-size: 0.65rem; left: 0.85rem; bottom: 0.75rem; }
+  .brand-mark { font-size: 0.7rem; right: 0.85rem; bottom: 0.75rem; }
+}
+
+/* Smartphone portrait — full single-column, hide non-essential chrome */
+@media (max-width: 480px) {
+  :root {
+    --slide-padding: 1rem;
+  }
+  /* Tutti i grid → 1 colonna piena */
+  #s1 .sectors-grid,
+  #s2 .stats,
+  #s3 .grid-3,
+  #s5 .chips,
+  #s6 .cards,
+  #s8 .grid-3 {
+    grid-template-columns: 1fr;
+  }
+  #s2 .stat:nth-child(3) { grid-column: 1; }
+  #s5 .chip.wide { grid-column: span 1; }
+
+  /* Tipografia mobile-ottimizzata */
+  #s1 h1 { font-size: clamp(1.6rem, 8.5vw, 2.2rem); }
+  #s1 .sub { font-size: 0.9rem; }
+  .h2 { font-size: clamp(1.3rem, 7vw, 1.9rem); }
+  .lead { font-size: 0.92rem; }
+
+  /* Cover logo & badge compatti */
+  #s1 .cover-logo {
+    padding: 0.4rem 0.7rem 0.4rem 0.4rem;
+    gap: 0.55rem;
+  }
+  #s1 .cover-logo img { width: 32px; height: 32px; }
+  #s1 .cover-logo-text { font-size: 0.78rem; }
+  #s1 .cover-logo-tag { font-size: 0.6rem; }
+
+  /* Mockup ridotto */
+  #s4 .mock { max-width: min(100%, 300px); }
+
+  /* CTA full-width touch-friendly */
+  #s10 .cta-btn { padding: 1rem 1.2rem; min-height: 48px; }
+
+  /* Nascondi nav dots (sostituiti da swipe) e brand-mark sotto 400px */
+  .nav-dots { display: none; }
+  .brand-mark { display: none; }
+
+  /* Logo persistente ancora più compatto */
+  .logo-mark { top: 0.55rem; left: 0.55rem; padding: 0.22rem 0.5rem 0.22rem 0.22rem; }
+  .logo-mark img { width: 22px; height: 22px; }
+  .logo-mark-text { font-size: 0.65rem; }
+
+  /* Slide 9: padding card ridotto */
+  #s9 tr { padding: 0.85rem 0.9rem; }
+}
+
+/* Forza single-column in portrait sotto 768px (sicurezza) */
+@media (orientation: portrait) and (max-width: 768px) {
+  #s1 .cover-grid,
+  #s2 .grid-2,
+  #s4 .grid-split,
+  #s5 .grid-2,
+  #s6 .grid-2,
+  #s10 .cta-wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1816,8 +2059,9 @@ body {
     }
   });
 
-  // Click navigation (left/right halves of viewport)
+  // Click navigation (left/right halves of viewport) — disabled on mobile
   document.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768) return; // su mobile lo swipe gestisce la navigazione
     // Ignore clicks on interactive elements
     if (e.target.closest('a, button, .nav-dot, .cta-btn')) return;
     const x = e.clientX;
@@ -1825,6 +2069,31 @@ body {
     if (x > w / 2) goTo(current + 1);
     else goTo(current - 1);
   });
+
+  // === TOUCH SWIPE NAVIGATION (mobile/tablet) ===
+  // Swipe left → slide successiva | swipe right → slide precedente
+  // Threshold 50px; ignora swipe verticali (lasciati allo scroll nativo)
+  let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
+  document.addEventListener('touchstart', (e) => {
+    if (!e.touches.length) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchStartTime = Date.now();
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e) => {
+    if (!e.changedTouches.length) return;
+    // Ignora se il tap è su un elemento interattivo (CTA, link, dot)
+    if (e.target.closest('a, button, .nav-dot, .cta-btn')) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    const dt = Date.now() - touchStartTime;
+    // Swipe orizzontale dominante, > 50px, in meno di 700ms
+    if (Math.abs(dx) > Math.abs(dy) * 1.5 && Math.abs(dx) > 50 && dt < 700) {
+      if (dx < 0) goTo(current + 1);
+      else goTo(current - 1);
+    }
+  }, { passive: true });
 
   setActive(0);
 })();
